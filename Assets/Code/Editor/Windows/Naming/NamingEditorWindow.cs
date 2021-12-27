@@ -9,7 +9,7 @@ namespace ByteSize.Editor
     {
         private const string LABEL_TO_SKIP = "CorrectlyNamed";
         
-        [MenuItem("Feud/Naming")]
+        [MenuItem("ByteSize/Naming")]
         private static void Open()
         {
             var window = CreateWindow<NamingEditorWindow>("Naming helper");
