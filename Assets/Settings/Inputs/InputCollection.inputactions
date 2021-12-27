@@ -1,0 +1,12 @@
+{
+    "name": "InputCollection",
+    "maps": [
+        {
+            "name": "Gameplay",
+            "id": "edd7b046-4d86-44b3-ad93-270b6acdce26",
+            "actions": [],
+            "bindings": []
+        }
+    ],
+    "controlSchemes": []
+}
