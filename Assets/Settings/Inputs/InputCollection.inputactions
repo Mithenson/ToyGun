@@ -4,8 +4,48 @@
         {
             "name": "Gameplay",
             "id": "edd7b046-4d86-44b3-ad93-270b6acdce26",
-            "actions": [],
-            "bindings": []
+            "actions": [
+                {
+                    "name": "Aim",
+                    "type": "Value",
+                    "id": "1d1a2168-8719-4b9f-8309-83abf993d426",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Hold",
+                    "type": "Button",
+                    "id": "ed8ce972-c16d-4491-b9da-a072082b81fa",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=2)"
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "89a9b768-bed6-4e3f-9d47-f653f08c2e0e",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aim",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "99e77757-a13e-4f15-970a-d1fa1eb587e2",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Hold",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

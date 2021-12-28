@@ -1,0 +1,19 @@
+ManifestFileVersion: 0
+CRC: 3761665251
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 5ffceae2d8d5f6645113676d59e6b3fe
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: e10f55f30b0328f5e99aa8eaaa73b442
+HashAppended: 0
+ClassTypes:
+- Class: 114
+  Script: {fileID: 11500000, guid: 80c1fff5ea084a1ca5d4a72526c26acb, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Content/Bundles/Configurations/InteractionConfiguration.asset
+Dependencies: []

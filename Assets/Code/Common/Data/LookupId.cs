@@ -2,6 +2,7 @@
 {
 	public enum LookupId
 	{
-		Player = 0,
+		Cannon = 0,
+		Crosshair = 1
 	}
 }

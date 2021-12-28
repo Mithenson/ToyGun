@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ef0e37c4694425cb9fd0a438d1978f1, type: 3}
   m_Name: InputRepository
   m_EditorClassIdentifier: 
-  _mappings: []
+  _mappings:
+  - _kind: 0
+    _input: {fileID: 5242533081038712702, guid: 1dde664fb2d9066418a9d9c02e72cffc, type: 3}
+  - _kind: 10
+    _input: {fileID: -4235550158390143960, guid: 1dde664fb2d9066418a9d9c02e72cffc, type: 3}

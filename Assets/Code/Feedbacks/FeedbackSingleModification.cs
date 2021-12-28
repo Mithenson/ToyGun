@@ -70,6 +70,8 @@ namespace ByteSize
 		#region Settings: specifics
 
 		[Header("Specifics")]
+		public T BaseLine;
+		
 		public T Destination;
 
 		#endregion
@@ -89,7 +91,7 @@ namespace ByteSize
 				_start = GetStartFromInitialization();
 		}
 
-		protected override void CustomPlayFeedback(Vector3 position, float feedbacksIntensity = 1)
+		protected override void CustomPlayFeedback(Vector3 position, float intensity = 1.0f)
 		{
 			if (Mode == Modes.OverTime
 			    && Transition == Transitions.ToDestination 
@@ -99,11 +101,11 @@ namespace ByteSize
 			switch (Mode)
 			{
 				case Modes.OverTime:
-					_routine = StartCoroutine(Sequence());
+					_routine = StartCoroutine(Sequence(intensity));
 					break;
 
 				case Modes.Instant:
-					Interpolate(Start, Destination, 1.0f);
+					Execute(1.0f, intensity);
 					break;
 			}
 		}
@@ -119,9 +121,10 @@ namespace ByteSize
 
 		#endregion
 
-		protected virtual IEnumerator Sequence()
+		protected virtual IEnumerator Sequence(float intensity)
 		{
 			var journey = NormalPlayDirection ? 0f : FeedbackDuration;
+			ComputeStartAndDestination(out var start, out var destination, intensity);
 
 			while (journey >= 0
 			       && journey <= FeedbackDuration
@@ -130,7 +133,7 @@ namespace ByteSize
 				var remappedTime = MMFeedbacksHelpers.Remap(journey, 0f, FeedbackDuration, 0f, 1f);
 				var evaluation = Mathf.Clamp01(Curve.Evaluate(remappedTime));
 				
-				Interpolate(Start, Destination, evaluation);
+				Execute(start, destination, evaluation);
 				
 				journey += NormalPlayDirection ? FeedbackDeltaTime : -FeedbackDeltaTime;
 				yield return null;
@@ -140,12 +143,30 @@ namespace ByteSize
 			yield return null;
 		}
 
+		private void ComputeStartAndDestination(out T start, out T destination, float intensity)
+		{
+			start = Interpolate(BaseLine, Start, intensity);
+			destination = Interpolate(BaseLine, Destination, intensity);
+		}
+
+		private void Execute(float evaluation, float intensity)
+		{
+			ComputeStartAndDestination(out var start, out var destination, intensity);
+			Execute(start, destination, evaluation);
+		}
+		private void Execute(T start, T destination, float evaluation)
+		{
+			var interpolation = Interpolate(start, destination, evaluation);
+			ProcessInterpolation(interpolation);
+		}
+
 		protected virtual T GetStartFromInitialization() => 
 			GetStart();
 		protected virtual T GetStartFromPlay() =>
 			GetStart();
 		protected abstract T GetStart();
 		
-		protected abstract void Interpolate(T start, T destination, float interpolation);
+		protected abstract T Interpolate(T start, T destination, float interpolation);
+		protected abstract void ProcessInterpolation(T interpolation);
 	}
 }

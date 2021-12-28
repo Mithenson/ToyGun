@@ -1,15 +1,19 @@
-﻿namespace ByteSize
+﻿using Zenject;
+
+namespace ByteSize
 {
 	public abstract class ScriptWithDependencies : Script
 	{
 		private Dependency[] _dependencies;
-		
-		public override void OnCreation()
-		{
-			base.OnCreation();
-			_dependencies = CollectDependencies();
-		}
 
+		[Inject]
+		public void Inject(DiContainer container)
+		{
+			_dependencies = CollectDependencies();
+			foreach (var dependency in _dependencies)
+				container.Inject(dependency);
+		}
+		
 		protected abstract Dependency[] CollectDependencies();
 
 		protected override void OnDestroy()

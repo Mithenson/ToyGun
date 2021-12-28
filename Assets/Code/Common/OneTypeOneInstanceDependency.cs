@@ -1,12 +1,36 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace ByteSize
 {
 	public class OneTypeOneInstanceDependency<TReference> : Dependency<TReference> where TReference : class, IReferencable
 	{
+		public bool HasReference => _hasReference;
+		
 		private bool _hasReference;
 		private TReference _reference;
+
+		public bool TryGetReference(out TReference reference)
+		{
+			if (!_hasReference)
+			{
+				reference = null;
+				return false;
+			}
+
+			reference = _reference;
+			return true;
+		}
+
+		public void Relay(Action<TReference> relayedMethod)
+		{
+			if (!_hasReference)
+				return;
+
+			relayedMethod(_reference);
+		}
 		
 		protected override void OnReferencesUpdated()
 		{
@@ -23,6 +47,7 @@ namespace ByteSize
 				if (!_hasReference || _reference != selection)
 					InvokeReferenceAcquired(selection);
 				
+				_hasReference = true;
 				_reference = selection;
 			}
 			

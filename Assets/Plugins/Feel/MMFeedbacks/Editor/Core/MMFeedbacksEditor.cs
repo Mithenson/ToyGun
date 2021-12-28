@@ -181,7 +181,7 @@ namespace MoreMountains.Feedbacks
             // Retrieve available feedbacks
             List<System.Type> types = (from domainAssembly in System.AppDomain.CurrentDomain.GetAssemblies()
                      from assemblyType in domainAssembly.GetTypes()
-                     where assemblyType.IsSubclassOf(typeof(MMFeedback))
+                     where assemblyType.IsSubclassOf(typeof(MMFeedback)) && !assemblyType.IsAbstract
                      select assemblyType).ToList();
 
             // Create display list from types

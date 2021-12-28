@@ -15,11 +15,13 @@ namespace ByteSize
 		private const string PRESENTATIONS_ROOT_NAME = "Presentations";
 		
 		// For any given type, gives the currently known list of types that inherit from or implement this type
+		[FoldoutGroup("Info"), ShowInInspector, ReadOnly, HideInEditorMode]
 		private static readonly Dictionary<Type, List<Type>> _assignableTypes = new Dictionary<Type, List<Type>>();
 		private static readonly HashSet<Type> _skippedTypes = new HashSet<Type>()
 		{
 			typeof(object),
 
+			typeof(ScriptWithDependencies),
 			typeof(Script),
 			typeof(MonoBehaviour),
 			typeof(Behaviour),
@@ -41,8 +43,8 @@ namespace ByteSize
 		};
 		
 		#if UNITY_EDITOR
-
-		[ShowInInspector, ReadOnly]
+		
+		[ShowInInspector, ReadOnly, HideInEditorMode]
 		private Transform PresentationsRoot => _presentationsRoot;
 		
 		#endif
@@ -52,6 +54,7 @@ namespace ByteSize
 		private Transform _presentationsRoot;
 		
 		// Keyed by concrete type
+		[FoldoutGroup("Info"), ShowInInspector, ReadOnly, HideInEditorMode]
 		private Dictionary<Type, List<IReferencable>> _references;
 		
 		protected virtual void Awake()
@@ -121,6 +124,17 @@ namespace ByteSize
 			OnReferencesUpdated?.Invoke();
 		}
 		
+		public bool TryGetReference<TReference>(out TReference result) where TReference : class, IReferencable
+		{
+			if (TryGetReferences<TReference>(out var results))
+			{
+				result = results.First();
+				return true;
+			}
+
+			result = null;
+			return false;
+		}
 		public bool TryGetReferences<TReference>(out List<TReference> results) where TReference : class, IReferencable 
 		{
 			results = new List<TReference>();
@@ -131,9 +145,9 @@ namespace ByteSize
 			results.Clear();
 
 			if (!_assignableTypes.TryGetValue(typeof(TReference), out var list))
-				return false;
-
-			list.Add(typeof(TReference));
+				list = new List<Type>() { typeof(TReference) };
+			else 
+				list.Add(typeof(TReference));
 			
 			foreach (var type in list)
 			{
